@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Innova Education - Digital Agency</title>
+  <style>
+    /* ====== Base / Reset ====== */
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #222;
+      background-color: #fefefe;
+      scroll-behavior: smooth;
+    }
+    a { color: #007BFF; text-decoration: none; transition: color 0.3s ease; }
+    a:hover, a:focus { color: #0056b3; outline: none; }
+    img { max-width: 100%; height: auto; display: block; }
+
+    .container { width: 90%; max-width: 1100px; margin: 0 auto; padding: 2rem 0; }
+
+    /* ====== Header / Nav ====== */
+    header {
+      position: fixed; top: 0; width: 100%;
+      background-color: #004080; color: white; z-index: 10000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-weight: 600;
+    }
+    .nav-container {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1rem;
+    }
+    .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: 1.2px; user-select: none; }
+    nav { position: relative; }
+    nav ul { list-style: none; display: flex; gap: 2rem; margin: 0; padding: 0; }
+    nav ul li a { color: white; font-size: 1rem; padding: 0.5rem 0; display: inline-block; }
+    nav ul li a.active, nav ul li a:hover, nav ul li a:focus {
+      color: #ffcc00; outline: none; border-bottom: 2px solid #ffcc00;
+    }
+    .hamburger { display: none; flex-direction: column; cursor: pointer; width: 25px; height: 20px; justify-content: space-between; }
+    .hamburger span { display: block; height: 3px; background: white; border-radius: 2px; transition: all 0.3s ease; }
+    /* Mobile nav */
+    @media (max-width: 768px) {
+      nav ul {
+        position: fixed; top: 60px; right: 0; background-color: #004080;
+        flex-direction: column; width: 200px; height: calc(100vh - 60px);
+        transform: translateX(100%); transition: transform 0.3s ease;
+        padding-top: 2rem; gap: 1.5rem; z-index: 9999;
+      }
+      nav ul.open { transform: translateX(0); }
+      .hamburger { display: flex; }
+      .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+      .hamburger.open span:nth-child(2) { opacity: 0; }
+      .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+    }
+
+    /* ====== Hero ====== */
+    #intro {
+      background: linear-gradient(135deg, #007BFF 0%, #004080 100%);
+      color: white; padding: 8rem 1rem 6rem; text-align: center;
+      min-height: 80vh; display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    #intro h1 { font-size: 2.8rem; margin-bottom: 1rem; font-weight: 800; text-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+    #intro p { font-size: 1.3rem; max-width: 700px; margin: 0 auto 2.5rem; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+    .btn-primary {
+      background-color: #ffcc00; color: #004080; padding: 1rem 3rem; font-weight: 700;
+      border: none; border-radius: 30px; cursor: pointer; font-size: 1.2rem;
+      box-shadow: 0 4px 10px rgba(255,204,0,0.6); transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none; display: inline-block; user-select: none;
+    }
+    .btn-primary:hover, .btn-primary:focus { background-color: #e6b800; box-shadow: 0 6px 14px rgba(230,184,0,0.8); outline: none; }
+
+    /* ====== Sections ====== */
+    section { padding: 6rem 0 4rem; background-color: white; border-bottom: 1px solid #eee; }
+    section:nth-of-type(even) { background-color: #f9fbff; }
+    section h2 { text-align: center; font-size: 2.3rem; margin-bottom: 2rem; color: #004080; font-weight: 800; }
+
+    /* Services */
+    #services .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+      gap: 2.5rem; max-width: 1000px; margin: 0 auto;
+    }
+    .service {
+      background-color: white; padding: 2.5rem 2rem; border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default; user-select: none;
+    }
+    .service:hover, .service:focus-within { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); outline: none; }
+    .service h3 { margin-top: 0; color: #007BFF; font-size: 1.5rem; margin-bottom: 0.8rem; font-weight: 800; }
+    .service p { font-size: 1.05rem; color: #444; line-height: 1.5; }
+
+    /* About */
+    #about .about-content { max-width: 900px; margin: 0 auto; text-align: center; font-size: 1.1rem; color: #444; line-height: 1.6; }
+    #about h3 { color: #007BFF; margin-top: 2.2rem; margin-bottom: 0.6rem; font-weight: 800; font-size: 1.3rem; }
+
+    /* Clients */
+    #clients { text-align: center; }
+    #clients .client-logos {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 3rem; margin-top: 2rem;
+    }
+    #clients .client-logos img {
+      max-height: 70px; filter: grayscale(100%); opacity: 0.6;
+      transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+      cursor: default; user-select: none;
+    }
+    #clients .client-logos img:hover, #clients .client-logos img:focus {
+      filter: none; opacity: 1; transform: scale(1.05); outline: none;
+    }
+
+    /* Why Choose Us */
+    #why-choose-us p {
+      max-width: 800px; margin: 0 auto; font-size: 1.1rem; text-align: center;
+      color: #555; line-height: 1.7; font-weight: 600;
+    }
+
+    /* Contact */
+    #contact form {
+      max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem;
+    }
+    #contact input, #contact textarea {
+      padding: 1rem 1.1rem; font-size: 1rem; border: 2px solid #ccc; border-radius: 8px;
+      resize: vertical; transition: border-color 0.3s ease, box-shadow 0.3s ease; font-family: inherit;
+    }
+    #contact input:focus, #contact textarea:focus { border-color: #007BFF; box-shadow: 0 0 8px rgba(0,123,255,0.3); outline: none; }
+    #contact button {
+      background-color: #007BFF; color: white; border: none; padding: 1rem 1.5rem; font-size: 1.1rem;
+      font-weight: 800; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 15px rgba(0,123,255,0.5);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease; user-select: none;
+    }
+    #contact button:hover, #contact button:focus { background-color: #0056b3; box-shadow: 0 8px 20px rgba(0,86,179,0.7); outline: none; }
+    #formMessage { text-align: center; margin-top: 0.5rem; font-weight: 700; min-height: 1.25rem; font-size: 1rem; color: green; }
+
+    /* Footer */
+    footer { background-color: #004080; color: white; text-align: center; padding: 1.5rem 1rem; font-size: 1rem; user-select: none; }
+    footer .social-icons { margin-top: 0.75rem; display: flex; justify-content: center; gap: 1.5rem; }
+    footer .social-icons a { color: white; transition: color 0.3s ease; display: inline-flex; align-items: center; justify-content: center; }
+    footer .social-icons a:hover, footer .social-icons a:focus { color: #ffcc00; outline: none; }
+    footer .social-icons svg { width: 24px; height: 24px; fill: currentColor; }
+
+    /* ====== Modal (from WhatsApp contact) ====== */
+    #modalOverlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      display: none; justify-content: center; align-items: center; z-index: 100000;
+    }
+    #modal {
+      background: white; border-radius: 12px; max-width: 420px; width: 92%;
+      padding: 1.5rem 1.5rem 2rem; box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+      text-align: center; position: relative;
+    }
+    #modal h3 { margin-top: 0; color: #004080; font-size: 1.4rem; margin-bottom: 0.5rem; }
+    #modal p { font-size: 1.05rem; margin: 0.5rem 0; white-space: pre-line; color: #333; }
+    #modalButtons { margin-top: 1.2rem; display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; }
+    #modalButtons button {
+      padding: 0.8rem 1.2rem; font-size: 1rem; border-radius: 30px; border: none; cursor: pointer; font-weight: 700;
+      min-width: 130px; transition: background-color 0.3s ease;
+    }
+    #sendWhatsApp { background-color: #25D366; color: white; box-shadow: 0 6px 15px rgba(37,211,102,0.6); }
+    #sendWhatsApp:hover { background-color: #1ebe57; }
+    #cancelModal { background-color: #ccc; color: #333; }
+    #cancelModal:hover { background-color: #aaa; }
+
+    @media (max-width: 600px) {
+      #intro h1 { font-size: 2.1rem; }
+      #intro p { font-size: 1.05rem; }
+      section h2 { font-size: 2rem; }
+      .service h3 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <div class="logo" tabindex="0" aria-label="Innova Education Logo">Innova Education</div>
+      <nav aria-label="Primary navigation">
+        <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-menu">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="primary-menu">
+          <li><a href="#services" class="nav-link">Services</a></li>
+          <li><a href="#about" class="nav-link">About Us</a></li>
+          <li><a href="#clients" class="nav-link">Clients</a></li>
+          <li><a href="#why-choose-us" class="nav-link">Why Choose Us?</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="intro" role="banner" aria-label="Introduction">
+      <div class="container">
+        <h1>Digital Agency That Thrives on Your Success</h1>
+        <p>If you are looking for an agency to help you create a remarkable presence online, you’ve come to the right place. We can help you take your business to the next level.</p>
+        <a href="#contact" class="btn-primary" role="button">Have a Project in Mind?</a>
+      </div>
+    </section>
+
+    <section id="services" aria-labelledby="services-title">
+      <h2 id="services-title">Hire Us For</h2>
+      <div class="container services-grid">
+        <article class="service" tabindex="0" aria-label="Design Service">
+          <h3>Design</h3>
+          <p>Our web design team has ample years of experience in the core areas of design to build a website that you need.</p>
+        </article>
+        <article class="service" tabindex="0" aria-label="Development Service">
+          <h3>Development</h3>
+          <p>Looking out for customized solutions for your websites? Our team will develop and deliver a website that’ll serve your purpose.</p>
+        </article>
+        <article class="service" tabindex="0" aria-label="Marketing Service">
+          <h3>Marketing</h3>
+          <p>With researched digital marketing, we will ensure that new customers and clients are able to find your business.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About Us</h2>
+      <div class="container about-content">
+        <p>We are a team of 40 web experts with over 12 years of experience in website building and marketing to help businesses grow online.</p>
+        <h3>Mission</h3>
+        <p>Our mission is to empower our clients to use the internet to its full potential by providing affordable, effective, custom design and marketing solutions.</p>
+        <h3>Vision</h3>
+        <p>Our vision is to become a global leader in providing the best and unique web design and marketing services to improve our client’s productivity and business strength.</p>
+      </div>
+    </section>
+
+    <section id="clients" aria-labelledby="clients-title">
+      <h2 id="clients-title">Clients We’ve Worked With</h2>
+      <div class="container client-logos" aria-label="Client logos">
+        <img src="https://via.placeholder.com/150x60?text=Client+1" alt="Client 1 Logo" tabindex="0" />
+        <img src="https://via.placeholder.com/150x60?text=Client+2" alt="Client 2 Logo" tabindex="0" />
+        <img src="https://via.placeholder.com/150x60?text=Client+3" alt="Client 3 Logo" tabindex="0" />
+        <img src="https://via.placeholder.com/150x60?text=Client+4" alt="Client 4 Logo" tabindex="0" />
+      </div>
+    </section>
+
+    <section id="why-choose-us" aria-labelledby="why-title">
+      <h2 id="why-title">Why Choose Us?</h2>
+      <p>We have the expertise and knowledge to offer impartial advice and services at an honest price. We listen to our client requirements and select the right solution that fits. We care for your business as our own.</p>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Connect with Us</h2>
+      <div class="container">
+        <form id="contactForm" novalidate>
+          <input type="text" name="name" id="name" placeholder="Your Name" required aria-required="true" aria-label="Your Name" />
+          <input type="email" name="email" id="email" placeholder="Your Email" required aria-required="true" aria-label="Your Email" />
+          <textarea name="message" id="message" rows="5" placeholder="Your Message" required aria-required="true" aria-label="Your Message"></textarea>
+          <button type="submit" aria-label="Send Message">Send</button>
+        </form>
+        <div id="formMessage" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; <span id="year"></span> Innova Education. All rights reserved.</p>
+      <div class="social-icons" aria-label="Social Media Links">
+        <a href="#" aria-label="Facebook" title="Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.07C22 6.48 17.52 2 11.93 2 6.35 2 1.86 6.48 1.86 12.07c0 4.99 3.64 9.13 8.4 9.93v-7.02H7.9v-2.91h2.36V9.41c0-2.33 1.38-3.62 3.49-3.62.99 0 2.03.18 2.03.18v2.23h-1.14c-1.12 0-1.47.69-1.47 1.4v1.68h2.5l-.4 2.91h-2.1v7.02c4.76-.8 8.4-4.94 8.4-9.93z"/></svg>
+        </a>
+        <a href="#" aria-label="Twitter" title="Twitter">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.46 6c-.77.34-1.6.57-2.46.67a4.27 4.27 0 0 0 1.87-2.37 8.53 8.53 0 0 1-2.7 1.03 4.26 4.26 0 0 0-7.26 3.89 12.1 12.1 0 0 1-8.79-4.46 4.25 4.25 0 0 0 1.32 5.68c-.66-.02-1.28-.2-1.83-.5v.05a4.26 4.26 0 0 0 3.42 4.17c-.31.09-.65.13-1 .13-.24 0-.48-.02-.71-.07a4.27 4.27 0 0 0 3.98 2.96A8.55 8.55 0 0 1 2 19.54a12.07 12.07 0 0 0 6.54 1.92c7.85 0 12.14-6.5 12.14-12.14 0-.18-.01-.36-.02-.53A8.67 8.67 0 0 0 22.46 6z"/></svg>
+        </a>
+        <a href="#" aria-label="LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3A2.94 2.94 0 0 1 22 6v12a2.94 2.94 0 0 1-3 3H5a2.94 2.94 0 0 1-3-3V6a2.94 2.94 0 0 1 3-3h14m-9.5 16.5V9.5H7V19.5h2.5m-1.25-11a1.44 1.44 0 0 0 0-2.88 1.44 1.44 0 0 0 0 2.88M21 19.5V13.5c0-3.5-1.87-5-4.37-5a3.78 3.78 0 0 0-3.41 1.87h-.05V9.5H10.9V19.5h2.43v-5.56c0-1.47.28-2.9 2.11-2.9 1.8 0 1.83 1.67 1.83 3V19.5H21z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Confirmation Modal -->
+  <div id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div id="modal">
+      <h3 id="modalTitle">Confirm Your Message</h3>
+      <p id="modalDesc"></p>
+      <div id="modalButtons">
+        <button id="sendWhatsApp" type="button">Send on WhatsApp</button>
+        <button id="cancelModal" type="button">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ====== Year in footer ======
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ====== Mobile nav toggle ======
+    const hamburger = document.querySelector('.hamburger');
+    const menu = document.getElementById('primary-menu');
+    hamburger.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
+    });
+
+    // ====== Contact form + WhatsApp modal integration ======
+    const form = document.getElementById('contactForm');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalDesc = document.getElementById('modalDesc');
+    const sendBtn = document.getElementById('sendWhatsApp');
+    const cancelBtn = document.getElementById('cancelModal');
+    const formMsg = document.getElementById('formMessage');
+
+    // TODO: Replace with your full WhatsApp number in international format (no + or spaces), e.g., '213562095412'
+    const whatsappNumber = '213000000000';
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+
+      if (!name || !email || !message) {
+        formMsg.style.color = 'crimson';
+        formMsg.textContent = 'Please fill in all fields.';
+        return;
+      }
+      if (!validateEmail(email)) {
+        formMsg.style.color = 'crimson';
+        formMsg.textContent = 'Please enter a valid email address.';
+        return;
+      }
+
+      // Create message summary (show in modal)
+      const summary = `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`;
+      modalDesc.textContent = summary;
+      modalOverlay.style.display = 'flex';
+      formMsg.textContent = '';
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      modalOverlay.style.display = 'none';
+    });
+
+    // Send on WhatsApp
+    sendBtn.addEventListener('click', () => {
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+      const text = `Hello, my name is ${name}.\nEmail: ${email}\nMessage: ${message}`;
+      const encodedText = encodeURIComponent(text);
+      const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedText}`;
+      window.open(whatsappURL, '_blank');
+      modalOverlay.style.display = 'none';
+      form.reset();
+      formMsg.style.color = 'green';
+      formMsg.textContent = 'Thanks! Opening WhatsApp…';
+    });
+
+    // Optional: close modal when clicking outside
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) modalOverlay.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
